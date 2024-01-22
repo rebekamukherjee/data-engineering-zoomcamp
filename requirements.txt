@@ -1,0 +1,6 @@
+pandas
+numpy
+pgcli
+psycopg[binary,pool]
+psycopg2-binary
+sqlalchemy
