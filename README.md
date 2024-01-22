@@ -1,6 +1,15 @@
-# Content
+# Data Engineering Zoompcamp 2024
 
-## Module 1: Containerization & Infrastructure as Code
+## Important Links
+
+- [GitHub Online Course](https://github.com/DataTalksClub/data-engineering-zoomcamp)
+- [YouTube Playlist](https://www.youtube.com/playlist?list=PL3MmuxUbc_hJed7dXYoJw8DoCuVHhGEQb)
+- [2024 Syllabus & Deadlines](https://docs.google.com/spreadsheets/d/e/2PACX-1vQACMLuutV5rvXg5qICuJGL-yZqIV0FBD84CxPdC5eZHf8TfzB-CJT_3Mo7U7oGVTXmSihPgQxuuoku/pubhtml)
+- [2024 Homework](https://github.com/DataTalksClub/data-engineering-zoomcamp/tree/main/cohorts/2024)
+
+## Content
+
+### Module 1: Containerization & Infrastructure as Code
 
 - Google Cloud Platform (GCP)
     - Introduction to GCP
