@@ -18,19 +18,19 @@
 [[code](https://github.com/DataTalksClub/data-engineering-zoomcamp/tree/main/01-docker-terraform/2_docker_sql)]
     - Introduction to Docker
     [[video](https://youtu.be/EYNwNlOrpr0),
-    [notes](1_docker.md)]
+    [notes](notes/1_docker.md)]
     - Ingesting NY Taxi Data into Postgres
     [[video](https://youtu.be/2JM-ziJt0WI),
-    [notes](2_postgresql.md)]
+    [notes](notes/2_postgresql.md)]
     - Connecting pgAdmin and Postgres
     [[video](https://youtu.be/hCAIVe9N0ow),
-    [notes](3_pgadmin.md)]
+    [notes](notes/3_pgadmin.md)]
     - Putting the ingestion script into Docker
     [[video](https://youtu.be/B1WwATwf-vY),
-    [notes](4_data-ingestion.md)]
+    [notes](notes/4_data-ingestion.md)]
     - Running Postgres and pgAdmin with Docker-Compose
     [[video](https://youtu.be/hKI6PkPhpa0),
-    [notes](5_docker-compose.md)]
+    [notes](notes/5_docker-compose.md)]
     - SQL refresher
     [[video](https://youtu.be/QEcps_iskgg)]
 - Terraform
