@@ -19,7 +19,7 @@ We can use the `argparse` library to parse command line arguments instead of `sy
 
 The `os.system` function allows us to run terminal commands from inside a Python Script. The `-O` argument outputs the file we downloaded using `wget` to the `output.csv` file.
 
-See [ingest_data.py](../1_containerization/1_docker/ingest_data.py)
+See [ingest_data.py](../code/1_docker/ingest_data.py)
 
 ## Dropping the table
 

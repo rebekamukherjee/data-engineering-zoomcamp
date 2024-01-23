@@ -39,14 +39,14 @@ docker run -it \
     -e POSTGRES_USER="root" \
     -e POSTGRES_PASSWORD="root" \
     -e POSTGRES_DB="ny_taxi" \
-    -v D:/rebeka/developer/courses/Data-Engineering/data-engineering-zoomcamp/1_containerization/1_docker/ny_taxi_postgres_data:/var/lib/postgresql/data \
+    -v D:/rebeka/developer/courses/data-engineering-zoomcamp/code/1_docker/ny_taxi_postgres_data:/var/lib/postgresql/data \
 	-p 5432:5432 \
     --network=pg-network \
     --name pg-database \
     postgres:13
 ```
 
-`docker run -it -e POSTGRES_USER="root" -e POSTGRES_PASSWORD="root" -e POSTGRES_DB="ny_taxi" -v D:/rebeka/developer/courses/Data-Engineering/data-engineering-zoomcamp/1_containerization/1_docker/ny_taxi_postgres_data:/var/lib/postgresql/data -p 5432:5432 --network=pg-network --name pg-database postgres:13`
+`docker run -it -e POSTGRES_USER="root" -e POSTGRES_PASSWORD="root" -e POSTGRES_DB="ny_taxi" -v D:/rebeka/developer/courses/data-engineering-zoomcamp/code/1_docker/ny_taxi_postgres_data:/var/lib/postgresql/data -p 5432:5432 --network=pg-network --name pg-database postgres:13`
 
 - `pg-network` is the name of the docker network
 - `pg-database` is the name used by pgAdmin to discover the database

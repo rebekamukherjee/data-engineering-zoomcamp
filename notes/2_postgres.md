@@ -39,7 +39,7 @@ docker run -it \
 	-e POSTGRES_USER="root" \
 	-e POSTGRES_PASSWORD="root" \
 	-e POSTGRES_DB="ny_taxi" \
-	-v D:/rebeka/developer/courses/Data-Engineering/data-engineering-zoomcamp/1_containerization/1_docker/ny_taxi_postgres_data:/var/lib/postgresql/data \
+	-v D:/rebeka/developer/courses/data-engineering-zoomcamp/code/1_docker/ny_taxi_postgres_data:/var/lib/postgresql/data \
 	-p 5432:5432 \
 	postgres:13
 ```
@@ -60,7 +60,7 @@ docker run -it \
 
 My machine did not like the back slash separated multiline command so I ran this instead:
 
-`docker run -it -e POSTGRES_USER="root" -e POSTGRES_PASSWORD="root" -e POSTGRES_DB="ny_taxi" -v D:/rebeka/developer/courses/Data-Engineering/data-engineering-zoomcamp/1_containerization/1_docker/ny_taxi_postgres_data:/var/lib/postgresql/data -p 5432:5432 postgres:13`
+`docker run -it -e POSTGRES_USER="root" -e POSTGRES_PASSWORD="root" -e POSTGRES_DB="ny_taxi" -v D:/rebeka/developer/courses/data-engineering-zoomcamp/code/1_docker/ny_taxi_postgres_data:/var/lib/postgresql/data -p 5432:5432 postgres:13`
 
 ![postgres docker](res/postgres-docker.png)
 
@@ -97,4 +97,4 @@ We can run a SQL statement like `SELECT CURRENT_DATE`. This will give a response
 
 ## Loading the dataset into Postgres
 
-See [upload-data.ipynb](../1_containerization/1_docker/upload-data.ipynb)
+See [upload-data.ipynb](../code/1_docker/upload-data.ipynb)
