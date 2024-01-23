@@ -15,13 +15,13 @@
     - Introduction to GCP
     [[video](https://youtu.be/18jIzE41fJ4)]
 - Docker + Postgres
-[[code](https://github.com/DataTalksClub/data-engineering-zoomcamp/tree/main/01-docker-terraform/2_docker_sql)]
+[[code](./code/1_docker/)]
     - Introduction to Docker
     [[video](https://youtu.be/EYNwNlOrpr0),
     [notes](notes/1_docker.md)]
     - Ingesting NY Taxi Data into Postgres
     [[video](https://youtu.be/2JM-ziJt0WI),
-    [notes](notes/2_postgresql.md)]
+    [notes](notes/2_postgres.md)]
     - Connecting pgAdmin and Postgres
     [[video](https://youtu.be/hCAIVe9N0ow),
     [notes](notes/3_pgadmin.md)]
@@ -35,6 +35,10 @@
     [[video](https://youtu.be/QEcps_iskgg)]
 - Terraform
     - Introduction to Terraform
+    [[video](https://youtu.be/s2bOYDCKl_M),
+    [notes](notes/6_terraform.md)]
     - Terraform Basics: Simple one file Terraform Deployment
+    [[video](https://youtu.be/Y2ux7gq3Z0o),
+    [notes](notes/6_terraform.md)]
     - Deployment with a Variables File
     - Configuring terraform and GCP SDK on Windows
