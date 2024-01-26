@@ -44,4 +44,3 @@
     - Deployment with a Variables File
     [[video](https://youtu.be/PBi0hHjLftk),
     [notes](notes/6_terraform.md)]
-    - Configuring terraform and GCP SDK on Windows
