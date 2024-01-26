@@ -11,9 +11,6 @@
 
 ### Module 1: Containerization & Infrastructure as Code
 
-- Google Cloud Platform (GCP)
-    - Introduction to GCP
-    [[video](https://youtu.be/18jIzE41fJ4)]
 - Docker + Postgres
 [[code](./code/1_docker/)]
     - Introduction to Docker
@@ -33,7 +30,11 @@
     [notes](notes/5_docker-compose.md)]
     - SQL refresher
     [[video](https://youtu.be/QEcps_iskgg)]
+- Google Cloud Platform (GCP)
+    - Introduction to GCP
+    [[video](https://youtu.be/18jIzE41fJ4)]
 - Terraform
+[[code](./code/2_terraform/)]
     - Introduction to Terraform
     [[video](https://youtu.be/s2bOYDCKl_M),
     [notes](notes/6_terraform.md)]
@@ -41,4 +42,6 @@
     [[video](https://youtu.be/Y2ux7gq3Z0o),
     [notes](notes/6_terraform.md)]
     - Deployment with a Variables File
+    [[video](https://youtu.be/PBi0hHjLftk),
+    [notes](notes/6_terraform.md)]
     - Configuring terraform and GCP SDK on Windows
