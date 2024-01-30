@@ -43,7 +43,7 @@ Provider is code that allows Terraform to communicate to manage resources on
 - `terraform apply` - We can run this command to build the infrastructure based on what is defined in the `.tf` files
 - `terraform destroy` - we can run this command to remove everything defined in the `.tf` files
 
-## Terraform Basics
+## Simple one file Terraform Deployment
 
 ### Setup Google Cloud Platform (GCP)
 
@@ -164,8 +164,6 @@ Now if we refresh the **Buckets** page in the GCP console, we will not see any b
 
 Since resources are not deployed, there is nothing much in the **terraform.tfstate** file as well. A file called **terraform.tfstate.backup** is created with the configuration history.
 
-## Terraform Variables
-
 ### Create a Google BigQuery Dataset using Terraform
 
 Append the code for creating [google bigquery dataset](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/bigquery_dataset) into **main.tf**:
@@ -184,7 +182,7 @@ In the GCP console, we can navigate to **Cloud Storage** to see the bucket creat
 
 Run the command `terraform destroy` in the command line to delete the resources.
 
-### Using variables in Terraform
+## Deployment with a Variables File
 
 Depending on what we are trying to do, using variables can be very handy. By convention, we define variables in a **variables.tf** file and then use those variables in the other files.
 

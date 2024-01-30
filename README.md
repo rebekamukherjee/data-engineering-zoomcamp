@@ -38,9 +38,56 @@
     - Introduction to Terraform
     [[video](https://youtu.be/s2bOYDCKl_M),
     [notes](notes/6_terraform.md)]
-    - Terraform Basics: Simple one file Terraform Deployment
+    - Simple one file Terraform Deployment
     [[video](https://youtu.be/Y2ux7gq3Z0o),
     [notes](notes/6_terraform.md)]
     - Deployment with a Variables File
     [[video](https://youtu.be/PBi0hHjLftk),
     [notes](notes/6_terraform.md)]
+
+### Module 2: Workflow Orchestration
+
+- Data Lake
+[[video](https://youtu.be/W3Zm6rjOq70),
+[notes](notes/7_data-lake.md)]
+- Introduction to Orchestration
+[[video 1](https://youtu.be/0yK7LXwYeD0),
+[video 2](https://youtu.be/Li8-MWHhTbo),
+[notes](notes/8_workflow-orchestration.md)]
+- Mage
+[[code](./code/3_mage/),
+[notes](notes/9_mage.md)]
+    - Introduction to Mage
+       - What is Mage?
+       [[video](https://youtu.be/AicKRcK3pa4)]
+       - Configuring Mage
+       [[video](https://youtu.be/2SV-av3L3-k)]
+       - A Simple Pipeline
+       [[video](https://youtu.be/stI-gg4QBnI)]
+    - ETL: API to Postgres
+        - Configuring Postgres
+        [[video](https://youtu.be/pmhI-ezd3BE)]
+        - Writing an ETL Pipeline
+        [[video](https://youtu.be/pmhI-ezd3BE)]
+    - ETL: API to GCS
+        - Configuring GCP
+        [[video](https://youtu.be/00LP360iYvE)]
+        - Writing an ETL Pipeline
+        [[video](https://youtu.be/w0XmcASRUnc)]
+    - ETL: GCS to BigQuery
+        - Writing an ETL Pipeline
+        [[video](https://youtu.be/JKp_uzM-XsM)]
+    - Parameterized Execution
+    [[video](https://youtu.be/H0hWjWxB-rg)]
+    - Backfills
+    [[video](https://youtu.be/ZoeC6Ag5gQc)]
+    - Deployment
+        - Deployment Prerequisites
+        [[video]()]
+        - Google Cloud Permissions
+        [[video]()]
+        - Deploying to Google Cloud
+        [[video 1](),
+        [video 2]()]
+    - Advanced Blocks
+    [[video]()]
