@@ -1,4 +1,4 @@
-# Introduction to Workflow Orchestration
+# Workflow Orchestration
 
 The data pipeline we created in module 1 (`ingest_data.py`) isn't the best data pipeline since it combine both read and write into one script. If one aspect fails the entire pipeline fails. 
 

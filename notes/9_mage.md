@@ -1,4 +1,4 @@
-# Introduction to Mage
+# Mage
 
 **Mage** is an open-source pipeline tool for orchestrating, transforming, and integrating data.
 
