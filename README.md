@@ -82,12 +82,29 @@
     - Backfills
     [[video](https://youtu.be/ZoeC6Ag5gQc)]
     - Deployment
+    [[code](./code/4_gcp/)]
         - Deployment Prerequisites
-        [[video]()]
+        [[video](https://youtu.be/zAwAX5sxqsg)]
         - Google Cloud Permissions
-        [[video]()]
+        [[video](https://youtu.be/O_H7DCmq2rA)]
         - Deploying to Google Cloud
-        [[video 1](),
-        [video 2]()]
-    - Advanced Blocks
+        [[video 1](https://youtu.be/9A872B5hb_0),
+        [video 2](https://youtu.be/0YExsb2HgLI)]
+
+### Module 3: Data Warehouse
+
+- BigQuery
+[[code](),
+[notes]()]
+    - Data Warehouse
+    [[video]()]
+    - Partitioning and Clustering
+    [[video]()]
+    - BigQuery Best Practices
+    [[video]()]
+    - Internals of BigQuery
+    [[video]()]
+    - Machine Learning in BigQuery
+    [[video]()]
+    - Machine Learning Deployment in BigQuery
     [[video]()]

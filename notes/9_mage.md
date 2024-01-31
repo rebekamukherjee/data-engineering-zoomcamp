@@ -451,3 +451,68 @@ In Mage we can create backfill functionality very easily by clicking on the **Ba
 - end date and time = `2024-01-07 00:00`
 - interval type = `Day`
 - interval units = `1`
+
+# Deploying Mage
+
+[Mage Documentation: Deploying to GCP with Terraform](https://docs.mage.ai/production/deploying-to-cloud/gcp/setup)
+
+## Prerequisites
+
+- Terraform *(already installed)*
+- Google Cloud CLI
+- Google Cloud Permissions
+- Mage Terraform Templates
+
+### Google Cloud Permissions
+
+In the **Google Cloud** console, navigate to **IAM & Admin** and edit the service account being used. **Owner** role will take care of everything, but if we want to be careful we shouyld add the following roles:
+- Artifact Registry Reader
+- Artifact Registry Writer
+- Cloud run Developer
+- Cloud SQL Admin
+- Service Account Token Creater
+
+### Google Cloud CLI
+
+Install **Google Cloud CLI** from here: https://cloud.google.com/sdk/docs/install
+
+To make sure the Google Cloud CLI is installed,
+- run `gloud auth list` to list the accounts that are authorized
+- run `gcloud storage ls` to list the buckets in the Google Cloud instance
+
+To use gcloud credentials, run `gcloud auth application-default login`
+
+### Mage Terraform Templates
+
+Clone the Mage Terraform templates by running `git clone https://github.com/mage-ai/mage-ai-terraform-templates.git`. Copy all the files in the `gcp` directory into a folder called `4_gcp` in the project repository.
+
+In the file called `variables.tf`, change the `default` value of `project_id` to `fleet-furnace-412302`.
+
+## Deploying to Google Cloud using Terraform
+
+Run `terraform init`, `terraform plan` and `terraform apply`. Password of postgres database is `true`.
+
+When I run `terraform apply`, I get the following errors:
+- Error creating Instance: googleapi: Error 403: Cloud Filestore API has not been used in project fleet-furnace-412302 before or it is disabled.
+- Error creating Connector: googleapi: Error 403: Serverless VPC Access API has not been used in project fleet-furnace-412302 before or it is disabled.
+- Error creating SecurityPolicy: googleapi: Error 403: Compute Engine API has not been used in project fleet-furnace-412302 before or it is disabled.
+- Error creating GlobalAddress: googleapi: Error 403: Compute Engine API has not been used in project fleet-furnace-412302 before or it is disabled.
+
+To solve this, I had to navigate to **Google Cloud** console > **APIs & Services** > **Library**> search for each API and enable them.
+
+Now, if we go to **Google Cloud Run**, we will see a new service called `mage-data-prep`. We can click into it to see more details.
+
+By default access is going to be restricted to these services. So we will have to white list our IP to be able to access these services. To do this, go to the **Networking** tab > **Ingress Control** > click on **All** *Allow direct access to your service from the internet* > save.
+
+We will see a URL at the top of the page. Open the URL in a new tab to get access to Mage!
+
+![mage deployment cloud run](res/mage-deployment-cloud-run.png)
+
+- This is a brand new project instance of Mage called `default_repo`.
+- Any development in here is going to persist to Google Cloud because we defined a file store instance where the files for this project are getting stored. So if we stop this project and start it back up, everything will still be there.
+- If we schedule jobs, as long its running it will execute the jobs.
+- The best way to develop and then deploy a repo to the Cloud is to use the `git sync` functionality. We would develop locally, push the project into a git repository, and then sync that to the hosted instance.
+
+To tear this down (*and not incur fees*), run `terraform destroy`.
+
+- I had to manually delete `mage-data-prep-db-instance` from Google Cloud **Cloud SQL**.
