@@ -12,7 +12,7 @@
 ### Module 1: Containerization & Infrastructure as Code
 
 - Docker + Postgres
-[[code](./code/1_docker/)]
+[[code](code/1_docker/)]
     - Introduction to Docker
     [[video](https://youtu.be/EYNwNlOrpr0),
     [notes](notes/1_docker.md)]
@@ -34,7 +34,7 @@
     - Introduction to GCP
     [[video](https://youtu.be/18jIzE41fJ4)]
 - Terraform
-[[code](./code/2_terraform/)]
+[[code](code/2_terraform/)]
     - Introduction to Terraform
     [[video](https://youtu.be/s2bOYDCKl_M),
     [notes](notes/6_terraform.md)]
@@ -55,7 +55,7 @@
 [video 2](https://youtu.be/Li8-MWHhTbo),
 [notes](notes/8_workflow-orchestration.md)]
 - Mage
-[[code](./code/3_mage/),
+[[code](code/3_mage/),
 [notes](notes/9_mage.md)]
     - Introduction to Mage
        - What is Mage?
@@ -82,7 +82,7 @@
     - Backfills
     [[video](https://youtu.be/ZoeC6Ag5gQc)]
     - Deployment
-    [[code](./code/4_gcp/)]
+    [[code](code/4_gcp/)]
         - Deployment Prerequisites
         [[video](https://youtu.be/zAwAX5sxqsg)]
         - Google Cloud Permissions
@@ -95,16 +95,16 @@
 
 - BigQuery
 [[code](),
-[notes]()]
+[notes](notes/10_bigquery.md)]
     - Data Warehouse
-    [[video]()]
+    [[video](https://youtu.be/jrHljAoD6nM)]
     - Partitioning and Clustering
-    [[video]()]
+    [[video](https://youtu.be/-CqXf7vhhDs)]
     - BigQuery Best Practices
-    [[video]()]
+    [[video](https://youtu.be/k81mLJVX08w)]
     - Internals of BigQuery
-    [[video]()]
+    [[video](https://youtu.be/eduHi1inM4s)]
     - Machine Learning in BigQuery
-    [[video]()]
+    [[video](https://youtu.be/B-WtpB0PuG4)]
     - Machine Learning Deployment in BigQuery
-    [[video]()]
+    [[video](https://youtu.be/BjARzEWaznU)]
