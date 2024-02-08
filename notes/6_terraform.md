@@ -64,7 +64,7 @@ In the real world we would want to limit these access. These are broad rolls tha
 
 If you are working on a project and you didn't need to be able to create and destroy a certain resources when you started out but need that access now, instead of destroying the service account and creating a new service account with those permissions, you can navigate to **IAM**, click on **Edit principal** next to the service account, and add another role.
 
-No we have a service account, but we need a way to say that we indeed have permissions to run as that service account. Navigate to **Service Accounts**, click on the ellipse next to the service account, and select **Manage keys**. Click on **ADD KEY** > **Create new key** > select **JSON** key type > **CREATE**. A key will be downloaded to our machine.
+Now we have a service account, but we need a way to say that we indeed have permissions to run as that service account. Navigate to **Service Accounts**, click on the ellipse next to the service account, and select **Manage keys**. Click on **ADD KEY** > **Create new key** > select **JSON** key type > **CREATE**. A key will be downloaded to our machine.
 
 It is important to note here that service account keys could pose a security risk if compromised. If someone gets access to this service account they can create VM instances that cost thousands of dollars an hour and mine Bitcoin. The can make command and control servers for botnets.
 
