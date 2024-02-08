@@ -11,7 +11,7 @@
 
 ### Module 1: Containerization & Infrastructure as Code
 
-- Docker + Postgres
+- **Docker** + **Postgres**
 [[code](code/1_docker/)]
     - Introduction to Docker
     [[video](https://youtu.be/EYNwNlOrpr0),
@@ -30,10 +30,10 @@
     [notes](notes/5_docker-compose.md)]
     - SQL refresher
     [[video](https://youtu.be/QEcps_iskgg)]
-- Google Cloud Platform (GCP)
+- **Google Cloud Platform (GCP)**
     - Introduction to GCP
     [[video](https://youtu.be/18jIzE41fJ4)]
-- Terraform
+- **Terraform**
 [[code](code/2_terraform/)]
     - Introduction to Terraform
     [[video](https://youtu.be/s2bOYDCKl_M),
@@ -54,7 +54,7 @@
 [[video 1](https://youtu.be/0yK7LXwYeD0),
 [video 2](https://youtu.be/Li8-MWHhTbo),
 [notes](notes/8_workflow-orchestration.md)]
-- Mage
+- **Mage**
 [[code](code/3_mage/),
 [notes](notes/9_mage.md)]
     - Introduction to Mage
@@ -93,11 +93,12 @@
 
 ### Module 3: Data Warehouse
 
-- BigQuery
-[[code](),
-[notes](notes/10_bigquery.md)]
-    - Data Warehouse
-    [[video](https://youtu.be/jrHljAoD6nM)]
+- Data Warehouse
+[[video](https://youtu.be/jrHljAoD6nM),
+[notes](notes/10_data-warehouse.md)]
+- **BigQuery**
+[[code](code/5_bigquery/),
+[notes](notes/11_bigquery.md)]
     - Partitioning and Clustering
     [[video](https://youtu.be/-CqXf7vhhDs)]
     - BigQuery Best Practices
@@ -108,3 +109,30 @@
     [[video](https://youtu.be/B-WtpB0PuG4)]
     - Machine Learning Deployment in BigQuery
     [[video](https://youtu.be/BjARzEWaznU)]
+
+### Module 4: Analytics Engineering
+
+- Introduction to Analytics Engineering
+[[video](https://youtu.be/uF76d5EmdtU),
+[notes](notes/12_analytics-engineering.md)]
+- **dbt**
+[[code](),
+[notes](notes/13_dbt.md)]    
+    - What is dbt?
+    [[video](https://youtu.be/gsKuETFJr54)]
+    - Starting a dbt project: Using BigQuery + dbt cloud
+    [[video](https://youtu.be/J0XCDyKiU64)]
+    - Starting a dbt project: Using Postgres + dbt core locally
+    [[video]()]
+    - dbt models
+    [[video](https://youtu.be/ueVy2N54lyc)]
+    - Testing and documenting dbt models
+    [[video]()]
+    - Deployment: Using BigQuery + dbt cloud
+    [[video]()]
+    - Deployment: Using Postgres + dbt core locally
+    [[video]()]
+    - Visualising the data using Google Data Studio
+    [[video]()]
+    - Visualising the data using Metabase
+    [[video]()]
