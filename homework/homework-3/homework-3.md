@@ -1,6 +1,8 @@
 # Homework 3: Data Warehouse
 
-Homework submission link: https://courses.datatalks.club/de-zoomcamp-2024/homework/hw3
+**Homework submission link**: https://courses.datatalks.club/de-zoomcamp-2024/homework/hw3
+
+**Deadline**: 14 February 2024
 
 ## BigQuery
 

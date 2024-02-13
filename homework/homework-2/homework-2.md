@@ -1,6 +1,8 @@
 # Homework 2: Workflow Orchestration
 
-Homework submission link: https://courses.datatalks.club/de-zoomcamp-2024/homework/hw2
+**Homework submission link**: https://courses.datatalks.club/de-zoomcamp-2024/homework/hw2
+
+**Deadline**: 08 February 2024
 
 ## Mage
 

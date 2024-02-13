@@ -1,6 +1,8 @@
 # Homework 1: Introduction & Prerequisites
 
-Homework submission link: https://courses.datatalks.club/de-zoomcamp-2024/homework/hw01
+**Homework submission link**: https://courses.datatalks.club/de-zoomcamp-2024/homework/hw01
+
+**Deadline**: 29 January 2024
 
 ## Docker & SQL
 
