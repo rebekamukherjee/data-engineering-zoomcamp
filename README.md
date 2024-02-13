@@ -116,23 +116,17 @@
 [[video](https://youtu.be/uF76d5EmdtU),
 [notes](notes/12_analytics-engineering.md)]
 - **dbt**
-[[code](),
+[[code](code/6_dbt/),
 [notes](notes/13_dbt.md)]    
     - What is dbt?
     [[video](https://youtu.be/gsKuETFJr54)]
-    - Starting a dbt project: Using BigQuery + dbt cloud
+    - Starting a dbt project using BigQuery + dbt Cloud
     [[video](https://youtu.be/J0XCDyKiU64)]
-    - Starting a dbt project: Using Postgres + dbt core locally
-    [[video]()]
     - dbt models
     [[video](https://youtu.be/ueVy2N54lyc)]
     - Testing and documenting dbt models
-    [[video]()]
-    - Deployment: Using BigQuery + dbt cloud
-    [[video]()]
-    - Deployment: Using Postgres + dbt core locally
-    [[video]()]
-    - Visualising the data using Google Data Studio
-    [[video]()]
-    - Visualising the data using Metabase
-    [[video]()]
+    [[video](https://youtu.be/2dNJXHFCHaY)]
+    - Deployment using dbt Cloud
+    [[video](https://youtu.be/V2m5C0n8Gro)]
+    - Visualising the data using Google Looker Studio
+    [[video](https://youtu.be/39nLTs74A3E)]
