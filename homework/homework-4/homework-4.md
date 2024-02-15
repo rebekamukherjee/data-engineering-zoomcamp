@@ -26,7 +26,7 @@ What happens when we execute `dbt build --vars '{'is_test_run':'true'}'`
 
 - It's the same as running *dbt build*
 - It applies a _limit 100_ to all of our models
-- It applies a _limit 100_ only to our staging models
+- **It applies a _limit 100_ only to our staging models**    <-- answer
 - Nothing
 
 ### Question 2:
@@ -36,21 +36,22 @@ What is the code that our CI job will run?
 - The code that has been merged into the main branch
 - The code that is behind the object on the dbt_cloud_pr_ schema
 - The code from any development branch that has been opened based on main
-- The code from a development branch requesting a merge to main
+- **The code from a development branch requesting a merge to main**    <-- answer
 
 ### Question 3:
 
 What is the count of records in the model `fact_fhv_trips` after running all dependencies with the test run variable disabled (`:false`)?
 
-*Create a staging model for the fhv data, similar to the ones made for yellow and green data. Add an additional filter for keeping only records with pickup time in year 2019. Do not add a deduplication step. Run this models without limits (`is_test_run: false`).*
+*Create a staging model for the fhv data, similar to the ones made for yellow and green data. Add an additional filter for keeping only records with pickup time in year 2019. Do not add a deduplication step. Run this model without limits (`is_test_run: false`).*
 
-*Create a core model similar to `fact_trips`, but selecting from `stg_fhv_tripdata` and joining with `dim_zones`. Similar to what we've done in `fact_trips`, keep only records with known pickup and dropoff locations entries for pickup and dropoff locations. 
-Run the dbt model without limits (`is_test_run: false`).*
+*Create a core model similar to `fact_trips`, but selecting from `stg_fhv_tripdata` and joining with `dim_zones`. Similar to what we've done in `fact_trips`, keep only records with known pickup and dropoff locations entries for pickup and dropoff locations. Run the dbt model without limits (`is_test_run: false`).*
 
 - 12998722
-- 22998722
+- **22998722**    <-- answer
 - 32998722
 - 42998722
+
+`dbt build --select +fact_fhv_trips+ --vars '{'is_test_run': 'false'}'`
 
 ### Question 4:
 
@@ -60,5 +61,7 @@ What is the service that had the most rides during the month of July 2019 month 
 
 - FHV
 - Green
-- Yellow
+- **Yellow**    <--answer
 - FHV and Green
+
+![report](report.png)
