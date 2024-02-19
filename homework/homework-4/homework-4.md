@@ -51,7 +51,9 @@ What is the count of records in the model `fact_fhv_trips` after running all dep
 - 32998722
 - 42998722
 
-`dbt build --select +fact_fhv_trips+ --vars '{'is_test_run': 'false'}'`
+**Answer**:
+
+*Run `dbt build --select +fact_fhv_trips+ --vars '{'is_test_run': 'false'}'`*
 
 ### Question 4:
 
@@ -63,5 +65,7 @@ What is the service that had the most rides during the month of July 2019 month 
 - Green
 - **Yellow**    <--answer
 - FHV and Green
+
+**Answer**:
 
 ![report](report.png)

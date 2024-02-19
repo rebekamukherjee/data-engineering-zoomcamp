@@ -41,3 +41,33 @@ SELECT DATE_TRUNC(pickup_datetime, MONTH) as month, service_type, COUNT(*)
 FROM `fleet-furnace-412302.dbt_rmukherjee.fact_trips`
 WHERE DATE_TRUNC(pickup_datetime, MONTH) = '2019-07-01'
 GROUP BY 1, 2;
+
+-- create a new table by unioning fact_trips and fact_fhv_trips
+CREATE OR REPLACE TABLE `fleet-furnace-412302.ny_taxi.fact_all_trips` AS
+SELECT 
+  pickup_locationid,
+  pickup_datetime,
+  pickup_borough,
+  pickup_zone,
+  dropoff_locationid,
+  dropoff_datetime,
+  dropoff_borough,
+  dropoff_zone,
+  service_type
+FROM `fleet-furnace-412302.dbt_rmukherjee.fact_trips`
+WHERE EXTRACT(year from pickup_datetime) = 2019
+
+UNION ALL
+
+SELECT 
+  pickup_locationid,
+  pickup_datetime,
+  pickup_borough,
+  pickup_zone,
+  dropoff_locationid,
+  dropoff_datetime,
+  dropoff_borough,
+  dropoff_zone,
+  'FHV' as service_type
+FROM `fleet-furnace-412302.dbt_rmukherjee.fact_fhv_trips`
+WHERE EXTRACT(year from pickup_datetime) = 2019;
