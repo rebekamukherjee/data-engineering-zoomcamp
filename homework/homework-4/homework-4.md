@@ -2,7 +2,7 @@
 
 **Homework submission link**: https://courses.datatalks.club/de-zoomcamp-2024/homework/hw4
 
-**Deadline**: 22 February 2024
+**Deadline**: 24 February 2024
 
 ## dbt
 

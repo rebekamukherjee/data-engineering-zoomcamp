@@ -130,3 +130,30 @@
     [[video](https://youtu.be/V2m5C0n8Gro)]
     - Visualising the data using Google Looker Studio
     [[video](https://youtu.be/39nLTs74A3E)]
+
+### Module 5: Batch Processing
+
+- Introduction to Batch processing
+[[video](https://youtu.be/dcHe5Fl3MF8),
+[notes](notes/14_batch-processing.md)]
+- **Spark**
+[[code](code/7_spark/)
+[notes](notes/15_spark.md)]
+    - What is Spark?
+    [[video](https://youtu.be/FhaqbEOuQ8U)]
+    - Spark Basics
+    [[video](https://youtu.be/r_Sf6fCB40c)]
+    - Spark Dataframes
+    [[video](https://youtu.be/ti3aC1m3rE8)]
+    - Spark SQL
+    [[video](https://youtu.be/uAlp2VuZZPY)]
+    - Anatomy of a Spark Cluster
+    [[video](https://youtu.be/68CipcZt7ZA)]
+    - GroupBy in Spark
+    [[video](https://youtu.be/9qrDsY_2COo)]
+    - Joins in Spark
+    [[video](https://youtu.be/lu7TrqAWuH4)]
+    - Connecting Spark to Google Cloud Storage
+    - Creating a Local Spark Cluster
+    - Setting up a Dataproc Cluster
+    - Connecting Spark to BigQuery
