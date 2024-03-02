@@ -154,6 +154,10 @@
     - Joins in Spark
     [[video](https://youtu.be/lu7TrqAWuH4)]
     - Connecting Spark to Google Cloud Storage
+    [[video](https://youtu.be/Yyz293hBVcQ)]
     - Creating a Local Spark Cluster
+    [[video](https://youtu.be/HXBwSlXo5IA)]
     - Setting up a Dataproc Cluster
+    [[video](https://youtu.be/osAiAYahvh8)]
     - Connecting Spark to BigQuery
+    [[video](https://youtu.be/HIm2BOj8C0Q)]

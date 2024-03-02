@@ -41,6 +41,29 @@ Download **Java** from: https://www.java.com/en/
 - Edit the **User Variable** `Path`
     - Add a new value `%HADOOP_HOME%\bin`
 
+### Install Spark
+
+- Create a folder `C:\spark`
+- Navigate to this folder in Git Bash and download Spark by running: `curl -LfO https://archive.apache.org/dist/spark/spark-3.3.2/spark-3.3.2-bin-hadoop3.tgz`
+- Untar the file by running `tar xzfv spark-3.3.2-bin-hadoop3.tgz`
+- Add a new **System Variable**
+    - Variable name = `SPARK_HOME`
+    - Variable value = `C:\spark\spark-3.3.2-bin-hadoop3`
+- Edit the **User Variable** `Path`
+    - Add a new value `%SPARK_HOME%\bin`
+- To test the installation, navigate to `spark-3.3.2-bin-hadoop3` directory
+    - Run `./bin/spark-shell.cmd`
+    - Then run the following code:
+    ```scala
+    val data = 1 to 10000
+    val distData = sc.parallelize(data)
+    distData.filter(_ < 10).collect()
+    ```
+
+Testing did not work in Git Bash but it did in Command Prompt.
+
+![spark install test](res/spark-install-test.png)
+
 ### Install PySpark
 
 - Run `pip install pyspark` or `pipenv install pyspark`
@@ -425,7 +448,7 @@ Running the code should display the following DAG in the Spark UI:
 ![spark groupby stages](res/spark-groupby-stages.png)
 - The `Exchange` task refers to the reshuffling.
 
-If we were to add sorting to the query by adding `ORDER BY 1,2` at the end, Spark would perform a very similar operation to `GROUP BY` after grouping the data. The resulting DAG would look liked this in the Spark UI:
+If we were to add sorting to the query by adding `ORDER BY 1,2` at the end, Spark would perform a very similar operation to `GROUP BY` after grouping the data. The resulting DAG will look liked this in the Spark UI:
 
 ![spark groupby orderby stages](res/spark-groupby-orderby-stages.png)
 
@@ -435,3 +458,384 @@ Repartitioning also involves reshuffling data.
 
 Reshuffling is an **expensive operation**, so it is in our best interest to reduce the amount of data to shuffle when querying.
 
+### Joins in Spark
+
+#### Joining two large tables
+
+To perform an outer join on two dataframes, run the following code:
+
+```python
+# read green and yellow revenue report parquet files
+df_green_revenue = spark.read.parquet('data/report/revenue/green')
+df_yellow_revenue = spark.read.parquet('data/report/revenue/yellow')
+
+# add the service type as a prefix to 'amount' and 'number_records' fields in both dataframes
+df_green_revenue_tmp = df_green_revenue \
+    .withColumnRenamed('amount', 'green_amount') \
+    .withColumnRenamed('number_records', 'green_number_records')
+
+df_yellow_revenue_tmp = df_yellow_revenue \
+    .withColumnRenamed('amount', 'yellow_amount') \
+    .withColumnRenamed('number_records', 'yellow_number_records')
+
+# join both the dataframes on 'hour' and 'zone' fields
+df_join = df_green_revenue_tmp.join(df_yellow_revenue_tmp, on=['hour', 'zone'], how='outer')
+
+# display the joined dataframe
+df_join.show()
+```
+Running the code should display the following DAG in the Spark UI:
+
+![spark join large tables stages](res/spark-join-large-tables-stages.png)
+- In the first stage, `df_green_revenue_tmp` is created
+- In the second stage, `df_yellow_revenue_tmp` is created
+- In the third stage, the outer join is performed
+
+Given all records for yellow taxis `Y1, Y2,... Yn` and for green taxis `G1, G2,... Gn` and knowing that the resulting composite key is `key K = (hour H, zone Z)`, we can express the resulting complex records as `(Kn, Yn)` for yellow records and `(Kn, Gn)` for green records.
+
+Spark performs a **reshuffle** on the data using **external merge sort**. Then it performs a **reduce** on the records by consolidating the records for yellow and green data with the same key to show the final output.
+
+![spark joins](res/spark-joins.png)
+- When the operation is an **outer join**, keys which only have yellow taxi or green taxi records will be shown with empty fields for the missing data and keys with both types of records will show both yellow and green taxi data.
+- When the operation is an **inner join**, only the keys with both types of records will be shown. This means  records such as `(K1, Y1, Ø)` and `(K4, Ø, G3)` would be excluded from the final result.
+
+#### Joining a large table and a small table
+
+To join a small table and a large table, run the following code:
+
+```python
+# read joined revenue report
+df_join = spark.read.parquet('data/report/revenue/total')
+
+# read taxi zones data
+df_zones = spark.read.parquet('data/zones/')
+
+# join both the dataframes on Zone ID
+df_result = df_join.join(df_zones, df_join.zone == df_zones.LocationID)
+
+# display the joined dataframe
+df_result.drop('LocationID', 'zone').show()
+```
+- The default join type in Spark SQL is the inner join.
+- Since we renamed the `LocationID` in the joined table to `zone`, we can't simply specify the columns to join and we need to provide a condition as criteria.
+- We use the `drop()` method to get rid of the extra columns we don't need anymore.
+
+Running the code should display the following DAG in the Spark UI:
+
+![spark join small large tables stages](res/spark-join-small-large-tables-stages.png)
+
+Since the `zones` table is very small, joining both tables with merge sort is unnecessary. What Spark does instead is called **broadcasting**. Spark sends a copy of the complete table to all of the executors and each executor then joins each partition of the big table in memory by performing a lookup on the local broadcasted table.
+
+Reshuffling isn't necessary because each executor already has all of the necessary information to perform the join on each partition, thus speeding up the join operation by orders of magnitude.
+
+![spark join broadcasting](res/spark-join-broadcasting.png)
+
+## Running Spark on Google Cloud Platform
+
+### Connecting to Google Cloud Storage
+
+#### Uploading files to GCP using `gsutil`
+
+We will use `gsutil` to upload our local files into our Data Lake. `gsutil` is included with the GCP SDK, so we should already have it from the previous modules.
+
+To upload the parquet files in the `code/7_spark/data/pq/` folder into GCS, run the following command from the `code/7_spark` folder in Git Bash:
+
+```bash
+gsutil -m cp -r data/pq/ gs://mage-zoomcamp-rebekam/pq
+```
+- `-m` option is for enabling multithreaded upload in order to speed it up
+- `cp` is for copying files
+- `-r` stands for recursive; it's used to state that the contents of the local folder are to be uploaded. For single files this option isn't needed.
+
+#### Configuring Spark with the GCS connector
+
+Download the connector from the [Google's Cloud Storage Connector](https://cloud.google.com/dataproc/docs/concepts/connectors/cloud-storage#non-clusters) website into a folder called `lib` in the working directory by running the following command in Git Bash:
+
+```bash
+gsutil cp gs://hadoop-lib/gcs/gcs-connector-hadoop3-2.2.5.jar lib/gcs-connector-hadoop3-2.2.5.jar
+```
+- We are using version 2.5.5 for Hadoop 3 in this lesson.
+
+Now, run the following code in a jupyter notebook to configure Spark by creating a configuration object:
+
+```python
+# import libraries
+from pyspark.sql import SparkSession
+from pyspark.conf import SparkConf
+from pyspark.context import SparkContext
+
+# configure Spark by creating a configuration object
+credentials_location = 'C:/Users/rebek/.google/credentials/google_credentials.json'
+
+conf = SparkConf() \
+    .setMaster('local[*]') \
+    .setAppName('test') \
+    .set("spark.jars", "./lib/gcs-connector-hadoop3-2.2.5.jar") \
+    .set("spark.hadoop.google.cloud.auth.service.account.enable", "true") \
+    .set("spark.hadoop.google.cloud.auth.service.account.json.keyfile", credentials_location)
+```
+
+Before we implicitly created a **context**, which represents a connection to a spark cluster. Now we need to explicitly create and configure the context by running the following code:
+
+```python
+sc = SparkContext(conf=conf)
+
+hadoop_conf = sc._jsc.hadoopConfiguration()
+
+hadoop_conf.set("fs.AbstractFileSystem.gs.impl",  "com.google.cloud.hadoop.fs.gcs.GoogleHadoopFS")
+hadoop_conf.set("fs.gs.impl", "com.google.cloud.hadoop.fs.gcs.GoogleHadoopFileSystem")
+hadoop_conf.set("fs.gs.auth.service.account.json.keyfile", credentials_location)
+hadoop_conf.set("fs.gs.auth.service.account.enable", "true")
+```
+
+Finally, instantiate a Spark session:
+
+```python
+spark = SparkSession.builder \
+    .config(conf=sc.getConf()) \
+    .getOrCreate()
+```
+
+#### Reading the remote data
+
+We can now read the parquet files stored in the Data Lake using Spark by using the bucket URI as a parameter:
+
+```python
+# read parquet files from the data lake into a spark dataframe
+df_green = spark.read.parquet('gs://mage-zoomcamp-rebekam/pq/green/*/*')
+
+# display the spark dataframe
+df_green.show()
+```
+
+### Creating a Local Spark Cluster
+
+#### Spark standalone master and workers
+
+Until now we have been creating a local Spark cluster and connecting to it using the following code. However, once the notebook kernel is shut down, the cluster disappears.
+
+```python
+spark = SparkSession.builder \
+    .master("local[*]") \
+    .appName('test') \
+    .getOrCreate()
+```
+To keep a cluster running even after notebook in which it was created is stopped, we need to learn how to create a Spark cluster in [Standalone Mode](https://spark.apache.org/docs/latest/spark-standalone.html).
+
+To setup Spark standalone mode on Windows:
+- Open a CMD terminal and navigate to the location of Spark `C:\spark\spark-3.3.2-bin-hadoop3`
+    - Start a master node by running: `bin\spark-class org.apache.spark.deploy.master.Master`
+    - Navigate to `localhost:8080` to see the Spark UI. There should not be any workers visible.
+    - Copy the Spark address that looks like `spark://<master_ip>:<port>` for the next step.
+- Open another CMD terminal and navigate to the location of spark
+    - Start a worker node by running: `bin\spark-class org.apache.spark.deploy.worker.Worker spark://192.168.1.12:7077`
+    - Alternatively we could try to run the following command but it may not run: `bin\spark-class org.apache.spark.deploy.worker.Worker spark://localhost:7077`
+    - We can append `--host <IP_ADDR>` at the end of the previous command if we want to run the worker on a different machine. For now we can leave it empty.
+    - Now we should be able to see a worker added to the Spark UI.
+
+> We use port 8080 to access the Spark UI and we use port 7077 for connecting our code to the cluster.
+
+Now we can modify the Spark Session code to the following code and run any operations that we have already learned:
+
+```python
+spark = SparkSession.builder \
+    .master("spark://192.168.1.12:7077") \
+    .appName('test') \
+    .getOrCreate()
+```
+
+A worker may not be able to run multiple jobs simultaneously. If we are running separate notebooks and connecting to the same Spark worker, we can the number of application that are running in the Spark UI. Since we haven't configured the workers, jobs will take as many resources as there are available to it.
+
+#### Parameterizing the script
+
+We can convert a jupyter notebook into a python script using `nbconvert` by running the following code: `jupyter nbconvert --to=script pyspark_standalone.ipynb`
+
+Then, we can use the `argparse` library to pass arguments as parameters to the script.
+
+```python
+import argparse
+
+parser = argparse.ArgumentParser()
+parser.add_argument('--input_green', required=True)
+parser.add_argument('--input_yellow', required=True)
+parser.add_argument('--output', required=True)
+
+args = parser.parse_args()
+input_green = args.input_green
+input_yellow = args.input_yellow
+output = args.output
+```
+
+Next, we can modify the code using the parameters that we have created:
+
+```python
+df_green = spark.read.parquet(input_green)
+df_yellow = spark.read.parquet(input_yellow)
+
+...
+
+df_result.coalesce(1) \
+    .write.parquet(output, mode='overwrite')
+```
+
+Finally, we can run the script from the terminal along with the parameters as follows:
+
+```bash
+python pyspark_standalone.py \
+    --input_green=data/pq/green/2020/*/ \
+    --input_yellow=data/pq/yellow/2020/*/ \
+    --output=data/report-2020
+```
+
+#### Submitting Spark jobs with Spark submit
+
+We can also parameterize the script to input
+- the cluster URL when having multiple available clusters
+- the number of workers to use for the job
+
+We can use an external script called [spark submit](https://spark.apache.org/docs/latest/submitting-applications.html) to do this instead of specifying these parameters when setting up the session inside the script.
+
+We can parameterize the script to input the cluster URL when having multiple available clusters by modifying the following code:
+
+```python
+spark = SparkSession.builder \
+    .appName('test') \
+    .getOrCreate()
+```
+
+We can use `spark-submit` to run the script by running the following command in Git Bash:
+
+```bash
+spark-submit \
+    --master="spark://192.168.1.12:7077" \
+    pyspark_standalone.py \
+        --input_green=data/pq/green/2020/*/ \
+        --input_yellow=data/pq/yellow/2020/*/ \
+        --output=data/report-2020
+```
+
+Once we are done running Spark in standalone mode, we will need to manually shut it down by entering `Ctrl+c` in both the CMD terminals for master and worker.
+
+### Setting up a Dataproc Cluster
+
+#### Creating the cluster
+
+**Dataproc** is Google's cloud-managed service for running Spark and other data processing tools.
+
+Navigate to Google Cloud Platform console and search for `dataproc`. The first time we access this, it will ask us to enable to API which we can do by clicking on the `ENABLE` button.
+
+![spark dataproc enable](res/spark-dataproc-enable.png)
+
+Next, click on `CREATE CLUSTER` > `Cluster on Compute Engine` > `CREATE`
+- Cluster Name = `de-zoomcamp-cluster`
+- Region = `us-west2` (same as bucket)
+- Zone = `Any`
+- Cluster type = `Single Node`
+- Optional components = `Jupyter Notebook`, `Docker`
+
+Now if we search for `vm instances` in Google Cloud Platform console, we should be able to see a new Virtual Machine instance called `de-zoomcamp-cluster-m`. We can connect to it if we want to connect to master UI, but we do not need to connect to it now.
+
+#### Running a job with the web UI
+
+Dataproc is already configured to use Google Cloud Storage so we do not need to configure it with code like we did [previously](#configuring-spark-with-the-gcs-connector).
+
+Make sure the PySpark script `pyspark_standalone.py` does not include `master` because we want to make sure the job uses the configuration from Dataproc in order to correctly assign the master. The SparkSession should look like this:
+
+```python
+spark = SparkSession.builder \
+    .appName('test') \
+    .getOrCreate()
+```
+
+In Google Cloud Storage, create a folder called `code` in the bucket and upload `pyspark_standalone.py` by running the following command in Git Bash from the working directory: `gsutil cp pyspark_standalone.py gs://mage-zoomcamp-rebekam/code/`
+
+Click on the cluster > `SUBMIT JOB` button > `SUBMIT`
+- Job tpe = `PySpark`
+- Main python file = `gs://mage-zoomcamp-rebekam/code/pyspark_standalone.py`
+- Arguments =
+    - `--input_green=gs://mage-zoomcamp-rebekam/pq/green/2021/*/`
+    - `--input_yellow=gs://mage-zoomcamp-rebekam/pq/yellow/2021/*/`
+    - `--output=gs://mage-zoomcamp-rebekam/report-2021`
+
+We can check the status of the job in the `Job details` page. Once the job has finished running we should be able to see something like the following line in the output: `GoogleCloudStorageFileSystem: Successfully repaired 'gs://mage-zoomcamp-rebekam/report-2021/' directory.`
+
+Now if we refresh our GCS bucket we should be able to see the folder `report-2021` with the output parquet file.
+
+#### Running a job with the gcloud SDK
+
+There are 3 ways of submitting jobs to a Dataproc cluster:
+1. Web UI
+2. Google Cloud SDK
+3. REST API
+
+In order to submit a job through **gcloud SDK**, we will need to grant certain permission to the service account that we have been using so far.
+
+Navigate to **IAM & Admin** in the Google Cloud console and add `Dataproc Administrator` role to the service account.
+
+Now, we can submit a job from the command line by running the following code:
+
+```bash
+gcloud dataproc jobs submit pyspark \
+    --cluster=de-zoomcamp-cluster \
+    --region=us-west2 \
+    gs://mage-zoomcamp-rebekam/code/pyspark_standalone.py \
+    -- \
+        --input_green=gs://mage-zoomcamp-rebekam/pq/green/2020/*/ \
+        --input_yellow=gs://mage-zoomcamp-rebekam/pq/yellow/2020/*/ \
+        --output=gs://mage-zoomcamp-rebekam/report-2020
+```
+
+Now if we refresh our GCS bucket we should be able to see the folder `report-2020` with the output parquet file.
+
+### Connecting Spark to BigQuery
+
+We can use the BigQuery connector with Spark with [this example](https://cloud.google.com/dataproc/docs/tutorials/bigquery-connector-spark-example#pyspark).
+
+Create a new python script called `pyspark_bigquery.py` and copy the contents of `pyspark_standalone.py` into it.
+
+After creating the Spark Session, add a line to create a temporary GCS bucket. We can use the temporary GCS bucket that Dataproc created.
+
+```python
+spark = SparkSession.builder \
+    .appName('test') \
+    .getOrCreate()
+
+spark.conf.set('temporaryGcsBucket', 'dataproc-temp-us-west2-297549834165-ty8oagby')
+```
+
+Then, replace the following code:
+```python
+df_result.coalesce(1) \
+    .write.parquet(output, mode='overwrite')
+```
+
+with:
+```python
+df_result.write.format('bigquery') \
+    .option('table', output) \
+    .save()
+```
+
+Upload `pyspark_bigquery.py` by running the following command in Git Bash from the working directory: `gsutil cp pyspark_bigquery.py gs://mage-zoomcamp-rebekam/code/`
+
+Now, we can submit a job from the command line by running the following code:
+
+```bash
+gcloud dataproc jobs submit pyspark \
+    --cluster=de-zoomcamp-cluster \
+    --region=us-west2 \
+    --jars=gs://spark-lib/bigquery/spark-bigquery-latest_2.12.jar \
+    gs://mage-zoomcamp-rebekam/code/pyspark_bigquery.py \
+    -- \
+        --input_green=gs://mage-zoomcamp-rebekam/pq/green/2020/*/ \
+        --input_yellow=gs://mage-zoomcamp-rebekam/pq/yellow/2020/*/ \
+        --output=trips_data_all.reports-2020
+```
+
+Now if we navigate to BigQuery and hit refresh we should be able to see a table called `report-2020` under the `trips_data_all` schema.
+
+If we run the following SQL query in BigQuery we should be able to see the data in `report-2020`.
+
+```sql
+SELECT * FROM `fleet-furnace-412302.trips_data_all.reports-2020` LIMIT 10;
+```
